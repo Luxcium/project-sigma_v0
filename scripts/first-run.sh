@@ -36,6 +36,13 @@ if ! command -v docker &>/dev/null; then
 fi
 log_success "Docker detected: $(docker --version)"
 
+# Check OpenSSL
+if ! command -v openssl &>/dev/null; then
+  log_error "OpenSSL is not installed. Please install OpenSSL."
+  exit 1
+fi
+log_success "OpenSSL detected: $(openssl version | head -n1)"
+
 # ── 2. Set up .env.local ────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"

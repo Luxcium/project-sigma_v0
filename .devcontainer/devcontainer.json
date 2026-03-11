@@ -4,6 +4,9 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
   "postCreateCommand": "bash scripts/first-run.sh",
   "forwardPorts": [3000, 5432],
   "customizations": {
