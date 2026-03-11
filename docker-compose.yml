@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: project-sigma-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: webapp_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker-data/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d webapp_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
