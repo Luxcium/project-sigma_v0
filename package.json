@@ -9,11 +9,11 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "db:push": "DISABLE_PRISMA_TELEMETRY=1 prisma db push",
-    "db:migrate": "DISABLE_PRISMA_TELEMETRY=1 prisma migrate dev",
-    "db:seed": "DISABLE_PRISMA_TELEMETRY=1 prisma db seed",
-    "db:studio": "DISABLE_PRISMA_TELEMETRY=1 prisma studio",
-    "db:generate": "DISABLE_PRISMA_TELEMETRY=1 prisma generate"
+    "db:push": "CHECKPOINT_DISABLE=1 prisma db push",
+    "db:migrate": "CHECKPOINT_DISABLE=1 prisma migrate dev",
+    "db:seed": "CHECKPOINT_DISABLE=1 prisma db seed",
+    "db:studio": "CHECKPOINT_DISABLE=1 prisma studio",
+    "db:generate": "CHECKPOINT_DISABLE=1 prisma generate"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

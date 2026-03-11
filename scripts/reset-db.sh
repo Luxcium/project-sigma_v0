@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Disable Prisma telemetry (checkpoint.prisma.io) — avoids firewall blocks in sandboxed environments
-export DISABLE_PRISMA_TELEMETRY=1
+export CHECKPOINT_DISABLE=1
 
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
