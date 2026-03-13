@@ -67,10 +67,7 @@ describe('loginAction', () => {
     it('calls signIn with credentials and redirectTo', async () => {
       // signIn resolves (redirect happens internally via Next.js)
       signInMock.mockResolvedValue(undefined);
-      await loginAction(
-        PREV,
-        makeFormData({ email: 'user@example.com', password: 'password123' }),
-      );
+      await loginAction(PREV, makeFormData({ email: 'user@example.com', password: 'password123' }));
       expect(signInMock).toHaveBeenCalledWith('credentials', {
         email: 'user@example.com',
         password: 'password123',
@@ -103,10 +100,7 @@ describe('loginAction', () => {
     it('re-throws non-AuthError errors (e.g. NEXT_REDIRECT)', async () => {
       signInMock.mockRejectedValue(new Error('NEXT_REDIRECT'));
       await expect(
-        loginAction(
-          PREV,
-          makeFormData({ email: 'user@example.com', password: 'password123' }),
-        ),
+        loginAction(PREV, makeFormData({ email: 'user@example.com', password: 'password123' })),
       ).rejects.toThrow('NEXT_REDIRECT');
     });
   });

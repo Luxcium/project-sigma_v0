@@ -16,11 +16,7 @@ function makeUrl(path: string) {
   return new URL(`http://localhost:3000${path}`);
 }
 
-function callAuthorized(
-  isLoggedIn: boolean,
-  pathname: string,
-  role?: string,
-): boolean | Response {
+function callAuthorized(isLoggedIn: boolean, pathname: string, role?: string): boolean | Response {
   const authorized = authConfig.callbacks?.authorized as AuthorizedFn;
   if (!authorized) throw new Error('authorized callback not found');
 
@@ -37,9 +33,9 @@ function callAuthorized(
     nextUrl: makeUrl(pathname),
   } as Parameters<AuthorizedFn>[0]['request'];
 
-  return authorized(
-    { auth, request } as unknown as Parameters<AuthorizedFn>[0],
-  ) as boolean | Response;
+  return authorized({ auth, request } as unknown as Parameters<AuthorizedFn>[0]) as
+    | boolean
+    | Response;
 }
 
 // ── authorized callback ────────────────────────────────────────────────────────
@@ -49,17 +45,13 @@ describe('authConfig.callbacks.authorized', () => {
     it('redirects unauthenticated users to /auth/login', () => {
       const result = callAuthorized(false, '/admin');
       expect(result).toBeInstanceOf(Response);
-      expect((result as Response).headers.get('location')).toContain(
-        '/auth/login',
-      );
+      expect((result as Response).headers.get('location')).toContain('/auth/login');
     });
 
     it('redirects authenticated non-admin users to /forbidden', () => {
       const result = callAuthorized(true, '/admin', 'USER');
       expect(result).toBeInstanceOf(Response);
-      expect((result as Response).headers.get('location')).toContain(
-        '/forbidden',
-      );
+      expect((result as Response).headers.get('location')).toContain('/forbidden');
     });
 
     it('allows ADMIN users through', () => {
@@ -72,9 +64,7 @@ describe('authConfig.callbacks.authorized', () => {
     it('redirects unauthenticated users to /auth/login', () => {
       const result = callAuthorized(false, '/dashboard');
       expect(result).toBeInstanceOf(Response);
-      expect((result as Response).headers.get('location')).toContain(
-        '/auth/login',
-      );
+      expect((result as Response).headers.get('location')).toContain('/auth/login');
     });
 
     it('allows authenticated users through regardless of role', () => {
@@ -87,9 +77,7 @@ describe('authConfig.callbacks.authorized', () => {
     it('redirects an already logged-in user away from the login page', () => {
       const result = callAuthorized(true, '/auth/login', 'USER');
       expect(result).toBeInstanceOf(Response);
-      expect((result as Response).headers.get('location')).toContain(
-        '/dashboard',
-      );
+      expect((result as Response).headers.get('location')).toContain('/dashboard');
     });
 
     it('allows unauthenticated users to view the login page', () => {
@@ -111,9 +99,15 @@ describe('authConfig.callbacks.jwt', () => {
   function callJwt(token: AugmentedToken, user?: ExtendedUser) {
     const jwt = authConfig.callbacks?.jwt as JwtFn;
     if (!jwt) throw new Error('jwt callback not found');
-    return jwt(
-      { token, user, account: null, profile: undefined, trigger: undefined, isNewUser: undefined, session: undefined } as unknown as Parameters<JwtFn>[0],
-    );
+    return jwt({
+      token,
+      user,
+      account: null,
+      profile: undefined,
+      trigger: undefined,
+      isNewUser: undefined,
+      session: undefined,
+    } as unknown as Parameters<JwtFn>[0]);
   }
 
   it('returns the token unchanged when no user is provided', () => {
@@ -147,19 +141,19 @@ describe('authConfig.callbacks.jwt', () => {
 // ── session callback ───────────────────────────────────────────────────────────
 
 describe('authConfig.callbacks.session', () => {
-  function callSession(
-    sessionUser: ExtendedUser,
-    token: AugmentedToken,
-  ) {
+  function callSession(sessionUser: ExtendedUser, token: AugmentedToken) {
     const session = authConfig.callbacks?.session as SessionFn;
     if (!session) throw new Error('session callback not found');
     const sessionObj = {
       user: sessionUser,
       expires: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
     };
-    return session(
-      { session: sessionObj, token, newSession: undefined, trigger: undefined } as unknown as Parameters<SessionFn>[0],
-    );
+    return session({
+      session: sessionObj,
+      token,
+      newSession: undefined,
+      trigger: undefined,
+    } as unknown as Parameters<SessionFn>[0]);
   }
 
   it('copies id and role from token into session.user', () => {

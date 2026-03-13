@@ -4,25 +4,25 @@ A production-ready Next.js 15 web application template with full authentication,
 
 ## Tech Stack
 
-| Concern | Technology |
-|---|---|
-| Framework | Next.js 15, App Router, Turbopack |
-| Language | TypeScript 5 (strict, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`) |
-| React | React 19 |
-| Styling | Tailwind CSS v4 (CSS-first: `@import "tailwindcss"` — no `tailwind.config.ts`) |
-| UI Components | Shadcn UI (button, input, label, card) |
-| Database | PostgreSQL 16 via Docker |
-| ORM | Prisma 6 |
-| Auth | Auth.js v5 (`next-auth@beta`) + `@auth/prisma-adapter` |
-| Auth Providers | Credentials (email + bcrypt) + GitHub OAuth |
-| Session | JWT strategy |
-| Validation | Zod |
-| State/Mutations | React 19 `useActionState` + Server Actions |
-| Unit Tests | Vitest 4 + React Testing Library + jsdom |
-| E2E Tests | Playwright 1 |
-| Coverage | Vitest V8 coverage (≥ 80 % statements/functions/lines, ≥ 75 % branches) |
-| CI | GitHub Actions (type-check → lint → unit tests → E2E tests) |
-| Runtime | Node.js 22 |
+| Concern         | Technology                                                                      |
+| --------------- | ------------------------------------------------------------------------------- |
+| Framework       | Next.js 15, App Router, Turbopack                                               |
+| Language        | TypeScript 5 (strict, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`) |
+| React           | React 19                                                                        |
+| Styling         | Tailwind CSS v4 (CSS-first: `@import "tailwindcss"` — no `tailwind.config.ts`)  |
+| UI Components   | Shadcn UI (button, input, label, card)                                          |
+| Database        | PostgreSQL 16 via Docker                                                        |
+| ORM             | Prisma 6                                                                        |
+| Auth            | Auth.js v5 (`next-auth@beta`) + `@auth/prisma-adapter`                          |
+| Auth Providers  | Credentials (email + bcrypt) + GitHub OAuth                                     |
+| Session         | JWT strategy                                                                    |
+| Validation      | Zod                                                                             |
+| State/Mutations | React 19 `useActionState` + Server Actions                                      |
+| Unit Tests      | Vitest 4 + React Testing Library + jsdom                                        |
+| E2E Tests       | Playwright 1                                                                    |
+| Coverage        | Vitest V8 coverage (≥ 80 % statements/functions/lines, ≥ 75 % branches)         |
+| CI              | GitHub Actions (type-check → lint → unit tests → E2E tests)                     |
+| Runtime         | Node.js 22                                                                      |
 
 ## Quick Start
 
@@ -33,6 +33,7 @@ bash scripts/first-run.sh
 ```
 
 The `first-run.sh` script is fully automated and idempotent — it handles everything:
+
 - Copies `.env.example` → `.env.local` and generates a real `AUTH_SECRET`
 - Installs npm dependencies
 - Starts PostgreSQL via Docker Compose and waits for health check
@@ -51,10 +52,10 @@ App runs at [http://localhost:3000](http://localhost:3000)
 
 > ⚠️ **UNSAFE — development only. Remove before production.**
 
-| Role  | Email                    | Password          |
-|-------|--------------------------|-------------------|
-| Admin | `luxcium_tmp@local.dev`  | `pass_UNSAFE_tmp` |
-| User  | `user@local.dev`         | `testpassword123` |
+| Role  | Email                   | Password          |
+| ----- | ----------------------- | ----------------- |
+| Admin | `luxcium_tmp@local.dev` | `pass_UNSAFE_tmp` |
+| User  | `user@local.dev`        | `testpassword123` |
 
 ## Context-Specific Instructions
 
@@ -112,11 +113,11 @@ The following **temporary dev credentials** must be removed before deploying to 
 
 ### Files containing `UNSAFE` / `luxcium_tmp` references
 
-| File | What to remove |
-|------|----------------|
+| File             | What to remove                                                                         |
+| ---------------- | -------------------------------------------------------------------------------------- |
 | `prisma/seed.ts` | Delete the entire `luxcium_tmp` upsert block (marked `TODO: REVOKE BEFORE PRODUCTION`) |
-| `.env.example` | Remove `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` lines |
-| `.env.local` | Delete or regenerate with production-safe values |
+| `.env.example`   | Remove `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` lines                              |
+| `.env.local`     | Delete or regenerate with production-safe values                                       |
 
 ### Grep commands to find all references
 
@@ -141,33 +142,33 @@ grep -r "REVOKE BEFORE PRODUCTION" . --include="*.ts"
 
 Copy `.env.example` to `.env.local` (done automatically by `first-run.sh`):
 
-| Variable              | Description                                      |
-|-----------------------|--------------------------------------------------|
-| `DATABASE_URL`        | PostgreSQL connection string                     |
-| `AUTH_SECRET`         | Random secret for Auth.js (auto-generated)       |
-| `AUTH_URL`            | Canonical app URL                                |
-| `AUTH_GITHUB_ID`      | GitHub OAuth App Client ID (optional locally)    |
-| `AUTH_GITHUB_SECRET`  | GitHub OAuth App Client Secret (optional locally)|
-| `SEED_ADMIN_EMAIL`    | ⚠️ UNSAFE — email for bootstrapped admin user   |
-| `SEED_ADMIN_PASSWORD` | ⚠️ UNSAFE — password for bootstrapped admin user|
+| Variable              | Description                                       |
+| --------------------- | ------------------------------------------------- |
+| `DATABASE_URL`        | PostgreSQL connection string                      |
+| `AUTH_SECRET`         | Random secret for Auth.js (auto-generated)        |
+| `AUTH_URL`            | Canonical app URL                                 |
+| `AUTH_GITHUB_ID`      | GitHub OAuth App Client ID (optional locally)     |
+| `AUTH_GITHUB_SECRET`  | GitHub OAuth App Client Secret (optional locally) |
+| `SEED_ADMIN_EMAIL`    | ⚠️ UNSAFE — email for bootstrapped admin user     |
+| `SEED_ADMIN_PASSWORD` | ⚠️ UNSAFE — password for bootstrapped admin user  |
 
 ## Scripts
 
-| Command                     | Description                                |
-|-----------------------------|--------------------------------------------|
-| `npm run dev`               | Start dev server with Turbopack            |
-| `npm run build`             | Production build                           |
-| `npm run lint`              | ESLint                                     |
-| `npm run format`            | Prettier (write)                           |
-| `npm run test`              | Run unit tests once                        |
-| `npm run test:watch`        | Run unit tests in watch mode               |
-| `npm run test:coverage`     | Run unit tests with V8 coverage report     |
-| `npm run test:e2e`          | Run Playwright E2E tests                   |
-| `npm run test:e2e:ui`       | Run Playwright E2E tests with UI explorer  |
-| `npm run db:migrate`        | Run Prisma migrations                      |
-| `npm run db:seed`           | Seed the database                          |
-| `npm run db:studio`         | Open Prisma Studio                         |
-| `bash scripts/reset-db.sh` | Drop & re-migrate & re-seed                |
+| Command                    | Description                               |
+| -------------------------- | ----------------------------------------- |
+| `npm run dev`              | Start dev server with Turbopack           |
+| `npm run build`            | Production build                          |
+| `npm run lint`             | ESLint                                    |
+| `npm run format`           | Prettier (write)                          |
+| `npm run test`             | Run unit tests once                       |
+| `npm run test:watch`       | Run unit tests in watch mode              |
+| `npm run test:coverage`    | Run unit tests with V8 coverage report    |
+| `npm run test:e2e`         | Run Playwright E2E tests                  |
+| `npm run test:e2e:ui`      | Run Playwright E2E tests with UI explorer |
+| `npm run db:migrate`       | Run Prisma migrations                     |
+| `npm run db:seed`          | Seed the database                         |
+| `npm run db:studio`        | Open Prisma Studio                        |
+| `bash scripts/reset-db.sh` | Drop & re-migrate & re-seed               |
 
 ## Testing
 
@@ -184,7 +185,7 @@ npm run test:coverage      # run with V8 coverage report
 Coverage is enforced via `vitest.config.ts`:
 
 | Metric     | Threshold |
-|------------|-----------|
+| ---------- | --------- |
 | Statements | ≥ 80 %    |
 | Functions  | ≥ 80 %    |
 | Lines      | ≥ 80 %    |

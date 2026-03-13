@@ -64,10 +64,7 @@ describe('DashboardPage', () => {
       makeSession({ id: '1', email: 'admin@example.com', role: 'ADMIN' }),
     );
     render(await DashboardPage());
-    expect(screen.getByRole('link', { name: /Admin Panel/i })).toHaveAttribute(
-      'href',
-      '/admin',
-    );
+    expect(screen.getByRole('link', { name: /Admin Panel/i })).toHaveAttribute('href', '/admin');
   });
 
   it('does not show Admin Panel link for USER role', async () => {
@@ -75,8 +72,6 @@ describe('DashboardPage', () => {
       makeSession({ id: '1', email: 'user@example.com', role: 'USER' }),
     );
     render(await DashboardPage());
-    expect(
-      screen.queryByRole('link', { name: /Admin Panel/i }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Admin Panel/i })).not.toBeInTheDocument();
   });
 });

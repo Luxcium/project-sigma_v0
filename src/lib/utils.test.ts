@@ -15,9 +15,7 @@ describe('cn (class name utility)', () => {
   });
 
   it('filters out falsy values', () => {
-    expect(cn('text-red-500', false && 'hidden', undefined, null, '')).toBe(
-      'text-red-500',
-    );
+    expect(cn('text-red-500', false && 'hidden', undefined, null, '')).toBe('text-red-500');
   });
 
   it('supports conditional class names via objects', () => {

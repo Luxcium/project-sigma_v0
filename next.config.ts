@@ -4,9 +4,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   experimental: { reactCompiler: false },
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
-    ],
+    remotePatterns: [{ protocol: 'https', hostname: 'avatars.githubusercontent.com' }],
   },
 };
 

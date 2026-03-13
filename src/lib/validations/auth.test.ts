@@ -36,9 +36,7 @@ describe('LoginSchema', () => {
       });
       expect(result.success).toBe(false);
       if (!result.success) {
-        const emailErrors = result.error.errors.filter(
-          (e) => e.path[0] === 'email',
-        );
+        const emailErrors = result.error.errors.filter((e) => e.path[0] === 'email');
         expect(emailErrors.length).toBeGreaterThan(0);
         expect(emailErrors[0]?.message).toBe('Invalid email address');
       }
@@ -66,9 +64,7 @@ describe('LoginSchema', () => {
       });
       expect(result.success).toBe(false);
       if (!result.success) {
-        const pwErrors = result.error.errors.filter(
-          (e) => e.path[0] === 'password',
-        );
+        const pwErrors = result.error.errors.filter((e) => e.path[0] === 'password');
         expect(pwErrors.length).toBeGreaterThan(0);
         expect(pwErrors[0]?.message).toBe('Password is required');
       }

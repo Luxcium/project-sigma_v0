@@ -51,8 +51,9 @@ describe('AdminPage', () => {
       makeSession({ id: '1', email: 'admin@example.com', role: 'ADMIN' }),
     );
     render(await AdminPage());
-    expect(
-      screen.getByRole('link', { name: /Back to Dashboard/i }),
-    ).toHaveAttribute('href', '/dashboard');
+    expect(screen.getByRole('link', { name: /Back to Dashboard/i })).toHaveAttribute(
+      'href',
+      '/dashboard',
+    );
   });
 });

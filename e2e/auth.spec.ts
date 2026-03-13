@@ -33,9 +33,7 @@ test.describe('Login page', () => {
 
     // Wait for the error alert to appear
     await expect(page.getByRole('alert')).toBeVisible({ timeout: 5000 });
-    expect(await page.getByRole('alert').textContent()).toContain(
-      'Invalid email or password',
-    );
+    expect(await page.getByRole('alert').textContent()).toContain('Invalid email or password');
 
     await page.screenshot({
       path: 'e2e/screenshots/login-error.png',
@@ -51,9 +49,7 @@ test.describe('Login page', () => {
     await expect(emailInput).toBeFocused();
   });
 
-  test('redirects to /dashboard after a successful login (USER)', async ({
-    page,
-  }) => {
+  test('redirects to /dashboard after a successful login (USER)', async ({ page }) => {
     await page.getByLabel('Email').fill('user@local.dev');
     await page.getByLabel('Password').fill('testpassword123');
     await page.getByRole('button', { name: 'Sign In' }).click();
@@ -68,9 +64,7 @@ test.describe('Login page', () => {
     });
   });
 
-  test('redirects to /dashboard after a successful login (ADMIN)', async ({
-    page,
-  }) => {
+  test('redirects to /dashboard after a successful login (ADMIN)', async ({ page }) => {
     await page.getByLabel('Email').fill('luxcium_tmp@local.dev');
     await page.getByLabel('Password').fill('pass_UNSAFE_tmp');
     await page.getByRole('button', { name: 'Sign In' }).click();
@@ -104,9 +98,7 @@ test.describe('Login page', () => {
 });
 
 test.describe('Protected routes (unauthenticated)', () => {
-  test('redirects /dashboard to login when not authenticated', async ({
-    page,
-  }) => {
+  test('redirects /dashboard to login when not authenticated', async ({ page }) => {
     await page.goto('/dashboard');
     await page.waitForURL('**/auth/login', { timeout: 5_000 });
     await expect(page).toHaveURL(/\/auth\/login/);
@@ -118,9 +110,7 @@ test.describe('Protected routes (unauthenticated)', () => {
     await expect(page).toHaveURL(/\/auth\/login/);
   });
 
-  test('redirects / to /dashboard (then to login when not authenticated)', async ({
-    page,
-  }) => {
+  test('redirects / to /dashboard (then to login when not authenticated)', async ({ page }) => {
     await page.goto('/');
     // The home page redirects to /dashboard which redirects to /auth/login
     await page.waitForURL('**/auth/login', { timeout: 5_000 });
@@ -129,9 +119,7 @@ test.describe('Protected routes (unauthenticated)', () => {
 });
 
 test.describe('Forbidden page', () => {
-  test('USER cannot access /admin — gets redirected to /forbidden', async ({
-    page,
-  }) => {
+  test('USER cannot access /admin — gets redirected to /forbidden', async ({ page }) => {
     // Log in as a regular user
     await page.goto('/auth/login');
     await page.getByLabel('Email').fill('user@local.dev');

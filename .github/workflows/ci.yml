@@ -64,7 +64,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -76,7 +76,7 @@ jobs:
       # GitHub OAuth is not configured in CI — credentials provider only
       AUTH_GITHUB_ID: placeholder
       AUTH_GITHUB_SECRET: placeholder
-      CHECKPOINT_DISABLE: "1"
+      CHECKPOINT_DISABLE: '1'
       SEED_ADMIN_EMAIL: luxcium_tmp@local.dev
       SEED_ADMIN_PASSWORD: pass_UNSAFE_tmp
 
@@ -96,8 +96,8 @@ jobs:
       - name: Generate Prisma client
         run: npx prisma generate
 
-      - name: Run database migrations
-        run: npx prisma migrate deploy
+      - name: Push database schema
+        run: npx prisma db push --skip-generate
 
       - name: Seed the database
         run: npx prisma db seed
@@ -109,9 +109,9 @@ jobs:
         run: npm run build
 
       - name: Run E2E tests
-        run: BASE_URL=http://localhost:3000 npm run test:e2e
+        run: npm run test:e2e
         env:
-          CI: "true"
+          CI: 'true'
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

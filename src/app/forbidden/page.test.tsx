@@ -10,9 +10,7 @@ describe('ForbiddenPage', () => {
 
   it('renders the "Access Forbidden" heading', () => {
     render(<ForbiddenPage />);
-    expect(
-      screen.getByRole('heading', { name: 'Access Forbidden' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Access Forbidden' })).toBeInTheDocument();
   });
 
   it('renders a link back to the dashboard', () => {
@@ -23,8 +21,6 @@ describe('ForbiddenPage', () => {
 
   it('renders the permission error message', () => {
     render(<ForbiddenPage />);
-    expect(
-      screen.getByText(/You don't have permission to access this page/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/You don't have permission to access this page/i)).toBeInTheDocument();
   });
 });

@@ -17,7 +17,7 @@ export function LoginForm() {
       {state.error && (
         <div
           role="alert"
-          className="rounded-md bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive"
+          className="bg-destructive/10 border-destructive/20 text-destructive rounded-md border px-4 py-3 text-sm"
         >
           {state.error}
         </div>

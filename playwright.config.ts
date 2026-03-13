@@ -3,9 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * Playwright E2E configuration.
  *
- * Tests run against a live Next.js dev server started automatically by
- * the `webServer` option.  Set the `BASE_URL` env var to run against a
- * separately started server (e.g. in CI after `npm run build && npm start`).
+ * Locally the Next.js dev server is started automatically.
+ * In CI the production server is started automatically (after `npm run build`).
  *
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -39,15 +38,11 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  /* Auto-start the Next.js dev server when running locally */
-  ...(!isCI
-    ? {
-        webServer: {
-          command: 'npm run dev',
-          url: 'http://localhost:3000',
-          reuseExistingServer: true,
-          timeout: 120_000,
-        },
-      }
-    : {}),
+  /* Start the server automatically — dev server locally, production server in CI */
+  webServer: {
+    command: isCI ? 'npm start' : 'npm run dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !isCI,
+    timeout: 120_000,
+  },
 });
