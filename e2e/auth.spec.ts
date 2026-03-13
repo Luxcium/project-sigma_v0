@@ -31,9 +31,9 @@ test.describe('Login page', () => {
     await page.getByLabel('Password').fill('wrongpassword');
     await page.getByRole('button', { name: 'Sign In' }).click();
 
-    // Wait for the error alert to appear
-    await expect(page.getByRole('alert')).toBeVisible({ timeout: 5000 });
-    expect(await page.getByRole('alert').textContent()).toContain('Invalid email or password');
+    // Wait for the error alert to appear (filter to exclude Next.js route announcer)
+    const errorAlert = page.getByRole('alert').filter({ hasText: 'Invalid email or password' });
+    await expect(errorAlert).toBeVisible({ timeout: 5000 });
 
     await page.screenshot({
       path: 'e2e/screenshots/login-error.png',
