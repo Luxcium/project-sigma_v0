@@ -107,13 +107,13 @@ fi
 log_info "Running Prisma migrations..."
 # Load .env.local for prisma (AUTH_SECRET, etc.)
 # Preserve DATABASE_URL if already set by the environment (devcontainer remoteEnv)
-_original_db_url="${DATABASE_URL:-}"
+SAVED_DATABASE_URL="${DATABASE_URL:-}"
 set -a
 # shellcheck disable=SC1090
 source "$ENV_LOCAL"
 set +a
-if [[ -n "$_original_db_url" ]]; then
-  export DATABASE_URL="$_original_db_url"
+if [[ -n "$SAVED_DATABASE_URL" ]]; then
+  export DATABASE_URL="$SAVED_DATABASE_URL"
 fi
 
 npx prisma migrate dev --name init --skip-seed 2>/dev/null || \
