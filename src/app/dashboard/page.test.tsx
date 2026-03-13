@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ExtendedUser } from '@/lib/auth.types';
 
 // ── Mock auth-guards and @/auth ───────────────────────────────────────────────
-const assertUserMock = vi.fn();
+const assertUserMock = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/auth-guards', () => ({
   assertUser: assertUserMock,
 }));

@@ -99,10 +99,10 @@ npm run test:coverage
 
 ```bash
 npm ci
-npx prisma generate && npx prisma migrate deploy && npx prisma db seed
+npx prisma generate && npx prisma db push --skip-generate && npx prisma db seed
 npx playwright install --with-deps chromium
 npm run build
-BASE_URL=http://localhost:3000 npm run test:e2e
+npm run test:e2e
 ```
 
 Both jobs upload their artefacts (coverage report, Playwright HTML report, screenshots) so you can inspect results directly in the GitHub Actions UI.

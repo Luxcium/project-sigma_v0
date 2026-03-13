@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ExtendedUser } from '@/lib/auth.types';
 
 // ── Mock auth-guards before importing AdminPage ───────────────────────────────
-const assertAdminMock = vi.fn();
+const assertAdminMock = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/auth-guards', () => ({
   assertAdmin: assertAdminMock,
 }));

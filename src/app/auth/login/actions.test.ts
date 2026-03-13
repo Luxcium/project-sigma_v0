@@ -15,7 +15,7 @@ vi.mock('next-auth', () => ({
 }));
 
 // ── Mock @/auth before importing actions ──────────────────────────────────────
-const signInMock = vi.fn();
+const signInMock = vi.hoisted(() => vi.fn());
 vi.mock('@/auth', () => ({ signIn: signInMock }));
 
 const { loginAction } = await import('@/app/auth/login/actions');

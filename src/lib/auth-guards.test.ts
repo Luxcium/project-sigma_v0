@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // ── Mock next/navigation before importing auth-guards ────────────────────────
-const redirectMock = vi.fn((path: string): never => {
-  throw new Error(`NEXT_REDIRECT:${path}`);
-});
+const redirectMock = vi.hoisted(() =>
+  vi.fn((path: string): never => {
+    throw new Error(`NEXT_REDIRECT:${path}`);
+  }),
+);
 
 vi.mock('next/navigation', () => ({
   redirect: redirectMock,
 }));
 
 // ── Mock @/auth before importing auth-guards ──────────────────────────────────
-const authMock = vi.fn();
+const authMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/auth', () => ({
   auth: authMock,
