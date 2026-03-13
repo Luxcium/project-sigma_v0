@@ -8,10 +8,10 @@ export default async function DashboardPage() {
 
   return (
     <main className="container mx-auto p-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-        <div className="bg-card text-card-foreground rounded-lg border p-6 mb-4">
-          <h2 className="text-xl font-semibold mb-4">Welcome back!</h2>
+      <div className="mx-auto max-w-2xl">
+        <h1 className="mb-6 text-3xl font-bold">Dashboard</h1>
+        <div className="bg-card text-card-foreground mb-4 rounded-lg border p-6">
+          <h2 className="mb-4 text-xl font-semibold">Welcome back!</h2>
           <dl className="space-y-2">
             <div className="flex justify-between">
               <dt className="text-muted-foreground">Email</dt>
@@ -24,7 +24,7 @@ export default async function DashboardPage() {
             <div className="flex justify-between">
               <dt className="text-muted-foreground">Role</dt>
               <dd>
-                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-primary text-primary-foreground">
+                <span className="bg-primary text-primary-foreground inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold">
                   {user.role}
                 </span>
               </dd>
@@ -34,7 +34,7 @@ export default async function DashboardPage() {
         {user.role === 'ADMIN' && (
           <a
             href="/admin"
-            className="inline-block mb-4 text-sm text-primary underline-offset-4 hover:underline"
+            className="text-primary mb-4 inline-block text-sm underline-offset-4 hover:underline"
           >
             Go to Admin Panel →
           </a>
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
         >
           <button
             type="submit"
-            className="rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground hover:bg-destructive/90"
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-md px-4 py-2 text-sm font-medium"
           >
             Sign Out
           </button>
