@@ -11,6 +11,8 @@ jobs:
   unit:
     name: Type-check · Lint · Unit tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
@@ -49,6 +51,8 @@ jobs:
   e2e:
     name: E2E tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     services:
       postgres:
