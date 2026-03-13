@@ -29,12 +29,14 @@ if [[ "$NODE_VERSION" -lt 22 ]]; then
 fi
 log_success "Node.js $(node --version) detected."
 
-# Check Docker
-if ! command -v docker &>/dev/null; then
-  log_error "Docker is not installed. Please install Docker."
-  exit 1
+# Check Docker (optional — not required inside devcontainer Compose services)
+HAS_DOCKER=false
+if command -v docker &>/dev/null && docker compose version &>/dev/null 2>&1; then
+  HAS_DOCKER=true
+  log_success "Docker detected: $(docker --version)"
+else
+  log_warn "Docker not available — assuming PostgreSQL is provided externally (e.g., devcontainer Compose service)."
 fi
-log_success "Docker detected: $(docker --version)"
 
 # Check OpenSSL
 if ! command -v openssl &>/dev/null; then
@@ -77,31 +79,42 @@ npm install --prefer-offline 2>/dev/null || npm install
 log_success "Dependencies installed."
 
 # ── 5. Start PostgreSQL via Docker Compose ──────────────────────────────────
-log_info "Starting PostgreSQL container..."
-docker compose up -d
+# In a devcontainer with Compose services, PostgreSQL is already running.
+# For local development, we start it via Docker Compose.
+if [[ "$HAS_DOCKER" == true ]]; then
+  log_info "Starting PostgreSQL container..."
+  docker compose up -d
 
-log_info "Waiting for PostgreSQL to be healthy..."
-MAX_RETRIES=30
-RETRY_COUNT=0
-until docker compose exec -T postgres pg_isready -U postgres -d webapp_db &>/dev/null; do
-  RETRY_COUNT=$((RETRY_COUNT + 1))
-  if [[ $RETRY_COUNT -ge $MAX_RETRIES ]]; then
-    log_error "PostgreSQL failed to become healthy after ${MAX_RETRIES} retries."
-    exit 1
-  fi
-  echo -n "."
-  sleep 2
-done
-echo ""
-log_success "PostgreSQL is healthy."
+  log_info "Waiting for PostgreSQL to be healthy..."
+  MAX_RETRIES=30
+  RETRY_COUNT=0
+  until docker compose exec -T postgres pg_isready -U postgres -d webapp_db &>/dev/null; do
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+    if [[ $RETRY_COUNT -ge $MAX_RETRIES ]]; then
+      log_error "PostgreSQL failed to become healthy after ${MAX_RETRIES} retries."
+      exit 1
+    fi
+    echo -n "."
+    sleep 2
+  done
+  echo ""
+  log_success "PostgreSQL is healthy."
+else
+  log_info "Skipping Docker Compose — PostgreSQL expected from devcontainer service."
+fi
 
 # ── 6. Run Prisma migrations ────────────────────────────────────────────────
 log_info "Running Prisma migrations..."
-# Load .env.local for prisma
+# Load .env.local for prisma (AUTH_SECRET, etc.)
+# Preserve DATABASE_URL if already set by the environment (devcontainer remoteEnv)
+_original_db_url="${DATABASE_URL:-}"
 set -a
 # shellcheck disable=SC1090
 source "$ENV_LOCAL"
 set +a
+if [[ -n "$_original_db_url" ]]; then
+  export DATABASE_URL="$_original_db_url"
+fi
 
 npx prisma migrate dev --name init --skip-seed 2>/dev/null || \
   npx prisma migrate deploy 2>/dev/null || \

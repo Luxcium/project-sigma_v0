@@ -1,12 +1,17 @@
 {
   "name": "Project Sigma v0",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "containerUser": "node",
+  "remoteUser": "node",
+  "remoteEnv": {
+    "DATABASE_URL": "postgresql://postgres:postgres_password@db:5432/webapp_db?schema=public",
+    "CHECKPOINT_DISABLE": "1",
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "DO_NOT_TRACK": "1"
   },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
+  "onCreateCommand": "npm install",
   "postCreateCommand": "bash scripts/first-run.sh",
   "forwardPorts": [3000, 5432],
   "customizations": {
@@ -29,6 +34,5 @@
         ]
       }
     }
-  },
-  "remoteUser": "node"
+  }
 }
